@@ -1,0 +1,68 @@
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: c2s_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: garments_management
+      MYSQL_USER: c2s_user
+      MYSQL_PASSWORD: c2s_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema_v2.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - c2s_network
+
+  # PHP Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: c2s_backend
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_USER: c2s_user
+      DB_PASS: c2s_password
+      DB_NAME: garments_management
+    ports:
+      - "8000:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./backend:/var/www/html/backend
+    networks:
+      - c2s_network
+
+  # React Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: c2s_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - c2s_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  c2s_network:
+    driver: bridge

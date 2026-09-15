@@ -1,0 +1,28 @@
+name: C2S Docker Image CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-containers:
+    name: Build & Test Multi-Container Setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Test Docker Compose Configuration
+        run: |
+          docker compose config
+
+      - name: Build Docker Compose Images
+        run: |
+          docker compose build --parallel
+

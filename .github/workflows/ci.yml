@@ -1,0 +1,56 @@
+name: C2S CI Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  frontend-validation:
+    name: Frontend Build & Lint Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: frontend/package.json
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci || npm install
+
+      - name: Lint Frontend Code
+        working-directory: frontend
+        run: npm run lint --if-present
+
+      - name: Build React Application
+        working-directory: frontend
+        run: npm run build
+
+  backend-validation:
+    name: Backend Syntax & Configuration Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: actions/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql, mysqli, gd
+
+      - name: Verify PHP Syntax Across Endpoints
+        run: |
+          for file in backend/*.php; do
+            php -l "$file" || exit 1
+          done
+
