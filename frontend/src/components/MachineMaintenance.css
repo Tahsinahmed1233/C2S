@@ -1,0 +1,98 @@
+.machines-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.machine-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.machine-cards-section h2 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-neutral-800);
+  margin-bottom: 1rem;
+}
+
+.machines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.machine-card {
+  background: #ffffff;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.machine-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.machine-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-neutral-900);
+}
+
+.machine-code-badge {
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-500);
+}
+
+.machine-health-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.health-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+}
+
+.machine-dates-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  background-color: var(--color-neutral-50);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.date-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--color-neutral-500);
+  text-transform: uppercase;
+}
+
+.date-val {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-neutral-900);
+}
+
+.machine-card-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.machine-card-actions button {
+  flex: 1;
+}
+
